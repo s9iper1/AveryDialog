@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AveryDialog</string>
+    <string name="cancel">Later</string>
+    <string name="rate">Rate</string>
+</resources>

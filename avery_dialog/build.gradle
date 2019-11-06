@@ -1,0 +1,121 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.0.0'
+}
+
+ext {
+    bintrayRepo = 'AveryDialog'
+    bintrayName = 'AveryDialog'
+
+    publishedGroupId = 'com.averydialog'
+    libraryName = 'AveryDialog'
+    artifact = 'AveryDialog'
+
+    libraryDescription = 'Simple library for showing rating dialog'
+
+    libraryVersion = '1.0'
+
+    developerId = 'codebasepk'
+    developerName = 'CodeBasePK'
+    developerEmail = 'codebasepk@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+group = 'com.averydialog'
+version = '1.0'
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            packaging 'aar'
+            groupId 'com.averydialog'
+            artifactId 'averydialog'
+
+            name 'averydialog'
+
+            licenses = ['Apache-2.0']
+
+            developers {
+                developer {
+                    id 'codebasepk'
+                    name 'CodeBasePK'
+                    email 'codebasepk@gmail.com'
+                }
+            }
+
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    pkg {
+        repo = 'maven'
+        name = 'AveryDialog'
+        name = 'AveryDialog'
+        userOrg = 'basers'
+        licenses = ['GPL-3.0']
+        vcsUrl = ''
+        dryRun = false
+        publish = true
+        override = false
+        publicDownloadNumbers = true
+        version {
+            name = '1.0'
+            released = new Date()        }
+    }
+}
+
+

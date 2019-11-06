@@ -1,0 +1,2 @@
+include ':app', ':avery_dialog'
+rootProject.name='AveryDialog'
